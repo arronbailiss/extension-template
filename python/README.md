@@ -12,7 +12,6 @@
   <p>
     <a href="https://strandsagents.com/">Documentation</a> ◆
     <a href="https://github.com/strands-agents/sdk-python">Python SDK</a> ◆
-    <a href="https://github.com/strands-agents/tools">Tools</a> ◆
     <a href="https://strandsagents.com/docs/community/community-packages/">Community Packages</a>
   </p>
 </div>
@@ -78,8 +77,8 @@ Each file contains a minimal skeleton. Here's what to implement:
 Tools let agents interact with external systems and perform actions. Implement your logic inside the decorated function and return a result dict.
 
 - [Creating custom tools](https://strandsagents.com/docs/user-guide/concepts/tools/custom-tools/) — Documentation
-- [sleep](https://github.com/strands-agents/tools/blob/main/src/strands_tools/sleep.py) — Simple tool with error handling
-- [browser](https://github.com/strands-agents/tools/blob/main/src/strands_tools/browser/__init__.py) — Multi-tool package example
+- [sleep](https://github.com/strands-agents/harness-sdk/blob/main/strands-py/src/strands/vended_tools/sleep/sleep.py) - Simple tool with input validation and error handling
+- [http_request](https://github.com/strands-agents/harness-sdk/tree/main/strands-py/src/strands/vended_tools/http_request) - Tool package with a configuration factory and typed output
 
 ### Plugins
 
@@ -197,7 +196,7 @@ You can also submit your package to be featured on the Strands website. See [Get
 
 - [Strands Agents documentation](https://strandsagents.com/)
 - [SDK Python repository](https://github.com/strands-agents/sdk-python)
-- [Official tools repository](https://github.com/strands-agents/tools)
+- [SDK vended tools](https://github.com/strands-agents/harness-sdk/tree/main/strands-py/src/strands/vended_tools)
 - [Community packages](https://strandsagents.com/docs/community/community-packages/)
 
 ## Security
