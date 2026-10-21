@@ -24,7 +24,7 @@
   </p>
 </div>
 
-This template helps you build and publish custom components for [Strands Agents](https://github.com/strands-agents/harness-sdk/tree/main/strands-ts). Whether you're creating a new tool, model provider, or session storage backend, this directory gives you a starting point with the right structure and conventions.
+This template helps you build and publish custom components for [Strands Agents](https://github.com/strands-agents/harness-sdk/tree/main/strands-ts). Whether you're creating a new tool, model provider, or storage backend, this directory gives you a starting point with the right structure and conventions.
 
 > This is the TypeScript half of the [extension-template](../README.md) monorepo. For the Python equivalent, see [`../python/`](../python/).
 
@@ -73,9 +73,9 @@ The template includes skeleton implementations for all major Strands extension p
 | `src/model.ts` | Model provider | Integrate custom LLM APIs |
 | `src/plugin.ts` | Plugin | Extend agent behavior with hooks and tools in a composable package |
 | `src/intervention.ts` | Intervention | Add composable control handlers for authorization, guardrails, and steering |
-| `src/session-manager.ts` | Snapshot storage | Persist conversations across restarts (a `SnapshotStorage` impl plugged into the SDK's `SessionManager`) |
 | `src/conversation-manager.ts` | Conversation manager | Control context window and message history |
 | `src/memory-store.ts` | Memory store | Give agents cross-session knowledge via a search backend |
+| `src/storage.ts` | Storage | Persist sessions, offloaded context, and other data under string keys |
 
 The setup script will remove components you don't select, so you only keep what you need.
 
@@ -112,11 +112,12 @@ Model providers connect agents to LLM APIs by extending the `Model` base class. 
 
 - The SDK's `BedrockModel` (`@strands-agents/sdk/models/bedrock`) is the canonical reference implementation.
 
-### Session storage
+### Storage
 
-Session persistence lives behind the `SnapshotStorage` interface — implement it to add new backends (S3, Redis, custom DB). The SDK's `FileStorage` is a worked example.
+Storage backends persist raw bytes under string keys. Implement `write()`, `read()`, `delete()`, and `list()`. The SDK's `SessionManager` saves sessions through a `Storage`, so implementing one is how you add a session backend such as S3, Redis, or a custom database. Context offloading uses the same interface.
 
 - [Session management](https://strandsagents.com/docs/user-guide/sdk/agents/session-management/) - Documentation
+- [Local file storage](https://github.com/strands-agents/harness-sdk/blob/main/strands-ts/src/storage/local-file-storage.ts) - Implementation example
 
 ### Conversation managers
 
@@ -181,7 +182,7 @@ Follow these conventions so your package fits the Strands ecosystem:
 | Model class | `{Name}Model` | `AmazonModel` |
 | Plugin class | `{Name}Plugin` | `AmazonPlugin` |
 | Intervention class | `{Name}Intervention` | `CedarIntervention` |
-| Snapshot storage | `{Name}SnapshotStorage` | `RedisSnapshotStorage` |
+| Storage class | `{Name}Storage` | `RedisStorage` |
 | Conversation manager | `{Name}ConversationManager` | `SummarizingConversationManager` |
 | Memory store | `{Name}MemoryStore` | `RedisMemoryStore` |
 | Tool factory output | `{descriptiveName}` (camelCase) | `searchWeb`, `sendEmail` |

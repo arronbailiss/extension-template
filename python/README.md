@@ -24,7 +24,7 @@
   </p>
 </div>
 
-This template helps you build and publish custom components for [Strands Agents](https://github.com/strands-agents/harness-sdk/tree/main/strands-py). Whether you're creating a new tool, model provider, or session manager, this directory gives you a starting point with the right structure and conventions.
+This template helps you build and publish custom components for [Strands Agents](https://github.com/strands-agents/harness-sdk/tree/main/strands-py). Whether you're creating a new tool, model provider, or storage backend, this directory gives you a starting point with the right structure and conventions.
 
 > This is the Python half of the [extension-template](../README.md) monorepo. For the TypeScript equivalent, see [`../typescript/`](../typescript/).
 
@@ -70,9 +70,9 @@ The template includes skeleton implementations for all major Strands extension p
 | `model.py` | Model provider | Integrate custom LLM APIs |
 | `plugin.py` | Plugin | Extend agent behavior with hooks and tools in a composable package |
 | `intervention.py` | Intervention | Add composable control handlers for authorization, guardrails, and steering |
-| `session_manager.py` | Session manager | Persist conversations across restarts |
 | `conversation_manager.py` | Conversation manager | Control context window and message history |
 | `memory_store.py` | Memory store | Give agents cross-session knowledge via a search backend |
+| `storage.py` | Storage | Persist sessions, offloaded context, and other data under string keys |
 
 The setup script will remove components you don't select, so you only keep what you need.
 
@@ -110,12 +110,12 @@ Model providers connect agents to LLM APIs. Implement the `stream()` method to r
 - [Custom providers](https://strandsagents.com/docs/user-guide/sdk/model-providers/custom_model_provider/) - Documentation
 - [strands-clova](https://github.com/aidendef/strands-clova) - Community model provider example
 
-### Session managers
+### Storage
 
-Session managers persist conversations to external storage, enabling conversations to resume after restarts or be shared across instances.
+Storage backends persist raw bytes under string keys. Implement `write()`, `read()`, `delete()`, and `list()`; the inherited `search()` gives keyword search on top of them. The SDK's `SnapshotSessionManager` saves sessions through a `Storage`, so implementing one is how you add a session backend such as S3, Redis, or a custom database. Context offloading uses the same interface.
 
 - [Session management](https://strandsagents.com/docs/user-guide/sdk/agents/session-management/) - Documentation
-- [File session manager](https://github.com/strands-agents/harness-sdk/blob/main/strands-py/src/strands/session/file_session_manager.py) - Implementation example
+- [Local file storage](https://github.com/strands-agents/harness-sdk/blob/main/strands-py/src/strands/storage/local_file_storage.py) - Implementation example
 
 ### Conversation managers
 
@@ -187,7 +187,7 @@ Follow these conventions so your package fits the Strands ecosystem:
 | Model class | `{Name}Model` | `AmazonModel` |
 | Plugin class | `{Name}Plugin` | `AmazonPlugin` |
 | Intervention class | `{Name}Intervention` | `CedarIntervention` |
-| Session manager | `{Name}SessionManager` | `RedisSessionManager` |
+| Storage class | `{Name}Storage` | `RedisStorage` |
 | Conversation manager | `{Name}ConversationManager` | `SummarizingConversationManager` |
 | Memory store | `{Name}MemoryStore` | `RedisMemoryStore` |
 | Tool function | `{descriptive_name}` | `search_web`, `send_email` |
