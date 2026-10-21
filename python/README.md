@@ -24,7 +24,7 @@
   </p>
 </div>
 
-This template helps you build and publish custom components for [Strands Agents](https://github.com/strands-agents/sdk-python). Whether you're creating a new tool, model provider, or session manager, this directory gives you a starting point with the right structure and conventions.
+This template helps you build and publish custom components for [Strands Agents](https://github.com/strands-agents/harness-sdk/tree/main/strands-py). Whether you're creating a new tool, model provider, or session manager, this directory gives you a starting point with the right structure and conventions.
 
 > This is the Python half of the [extension-template](../README.md) monorepo. For the TypeScript equivalent, see [`../typescript/`](../typescript/).
 
@@ -84,7 +84,7 @@ Each file contains a minimal skeleton. Here's what to implement:
 
 Tools let agents interact with external systems and perform actions. Implement your logic inside the decorated function and return a result dict.
 
-- [Creating custom tools](https://strandsagents.com/docs/user-guide/concepts/tools/custom-tools/) — Documentation
+- [Creating custom tools](https://strandsagents.com/docs/user-guide/sdk/tools/custom-tools/) - Documentation
 - [sleep](https://github.com/strands-agents/harness-sdk/blob/main/strands-py/src/strands/vended_tools/sleep/sleep.py) - Simple tool with input validation and error handling
 - [http_request](https://github.com/strands-agents/harness-sdk/tree/main/strands-py/src/strands/vended_tools/http_request) - Tool package with a configuration factory and typed output
 
@@ -92,44 +92,44 @@ Tools let agents interact with external systems and perform actions. Implement y
 
 Plugins provide a composable way to extend agent behavior by bundling hooks and tools into a single package. Use `@hook` to react to agent lifecycle events and `@tool` to add capabilities, all auto-discovered and registered when the plugin is attached to an agent.
 
-- [Plugins](https://strandsagents.com/docs/user-guide/concepts/plugins/) — Documentation
-- [AgentSkills](https://github.com/strands-agents/harness-sdk/tree/main/strands-py/src/strands/vended_plugins/skills) — Plugin example with hooks and tools
-- [Steering](https://github.com/strands-agents/harness-sdk/tree/main/strands-py/src/strands/vended_plugins/steering) — Advanced plugin example
+- [Plugins](https://strandsagents.com/docs/user-guide/sdk/plugins/) - Documentation
+- [AgentSkills](https://github.com/strands-agents/harness-sdk/tree/main/strands-py/src/strands/vended_plugins/skills) - Plugin example with hooks and tools
+- [Steering](https://github.com/strands-agents/harness-sdk/tree/main/strands-py/src/strands/vended_plugins/steering) - Advanced plugin example
 
 ### Interventions
 
 Intervention handlers provide composable control layers for agents. Override lifecycle methods (like `before_tool_call`) to intercept events and return typed decisions: Proceed, Deny, Guide, Confirm, or Transform. Use them for authorization checks, guardrails, and human-in-the-loop approval.
 
-- [Interventions](https://strandsagents.com/docs/user-guide/concepts/agents/interventions/) — Documentation
-- [Vended interventions](https://github.com/strands-agents/harness-sdk/tree/main/strands-py/src/strands/vended_interventions) — Cedar authorization, HITL, and steering examples
+- [Interventions](https://strandsagents.com/docs/user-guide/sdk/agents/interventions/) - Documentation
+- [Vended interventions](https://github.com/strands-agents/harness-sdk/tree/main/strands-py/src/strands/vended_interventions) - Cedar authorization, HITL, and steering examples
 
 ### Model providers
 
 Model providers connect agents to LLM APIs. Implement the `stream()` method to receive messages and yield streaming events.
 
-- [Custom providers](https://strandsagents.com/docs/user-guide/concepts/model-providers/custom_model_provider/) — Documentation
-- [strands-clova](https://github.com/aidendef/strands-clova) — Community model provider example
+- [Custom providers](https://strandsagents.com/docs/user-guide/sdk/model-providers/custom_model_provider/) - Documentation
+- [strands-clova](https://github.com/aidendef/strands-clova) - Community model provider example
 
 ### Session managers
 
 Session managers persist conversations to external storage, enabling conversations to resume after restarts or be shared across instances.
 
-- [Session management](https://strandsagents.com/docs/user-guide/concepts/agents/session-management/) — Documentation
-- [File session manager](https://github.com/strands-agents/harness-sdk/blob/main/strands-py/src/strands/session/file_session_manager.py) — Implementation example
+- [Session management](https://strandsagents.com/docs/user-guide/sdk/agents/session-management/) - Documentation
+- [File session manager](https://github.com/strands-agents/harness-sdk/blob/main/strands-py/src/strands/session/file_session_manager.py) - Implementation example
 
 ### Conversation managers
 
 Conversation managers control the context window and how message history grows over time. They handle trimming old messages or summarizing context to stay within model limits.
 
-- [Conversation management](https://strandsagents.com/docs/user-guide/concepts/agents/conversation-management/) — Documentation
-- [Sliding window manager](https://github.com/strands-agents/harness-sdk/blob/main/strands-py/src/strands/agent/conversation_manager/sliding_window_conversation_manager.py) — Implementation example
+- [Conversation management](https://strandsagents.com/docs/user-guide/sdk/agents/conversation-management/) - Documentation
+- [Sliding window manager](https://github.com/strands-agents/harness-sdk/blob/main/strands-py/src/strands/agent/conversation_manager/sliding_window_conversation_manager.py) - Implementation example
 
 ### Memory stores
 
 Memory stores give agents cross-session knowledge. A `MemoryManager` searches one or more stores to recall facts and, for writable stores, writes new ones. Implement `search()` to back memory with your own store — a vector database, a managed search service, or any system that retrieves entries by relevance. For writes, implement whichever sinks fit your backend. `add()` for adding an extracted memory. For discrete-entry backend (e.g. a vector DB), only implement this method. `add_messages()` for ingesting raw conversation turns to extract server-side. Only implement this for backends that support server side extraction. Store identity and behavior (`name`, `description`, `max_search_results`, `writable`, `extraction`) come from config via `MemoryStoreConfig`, matching the SDK's own stores; extend `TemplateMemoryStoreConfig` with any backend-specific fields.
 
-- [Memory](https://strandsagents.com/docs/user-guide/concepts/memory/overview/) — Documentation
-- [Bedrock Knowledge Base store](https://github.com/strands-agents/harness-sdk/tree/main/strands-py/src/strands/vended_memory_stores/bedrock_knowledge_base) — Implementation example
+- [Memory](https://strandsagents.com/docs/user-guide/sdk/memory/overview/) - Documentation
+- [Bedrock Knowledge Base store](https://github.com/strands-agents/harness-sdk/tree/main/strands-py/src/strands/vended_memory_stores/bedrock_knowledge_base) - Implementation example
 
 ## Testing
 
@@ -203,13 +203,13 @@ You can also submit your package to be featured on the Strands website. See [Get
 ## Resources
 
 - [Strands Agents documentation](https://strandsagents.com/)
-- [SDK Python repository](https://github.com/strands-agents/sdk-python)
+- [Python SDK](https://github.com/strands-agents/harness-sdk/tree/main/strands-py)
 - [SDK vended tools](https://github.com/strands-agents/harness-sdk/tree/main/strands-py/src/strands/vended_tools)
 - [Community packages](https://strandsagents.com/docs/community/community-packages/)
 
 ## Security
 
-See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more information.
+See [CONTRIBUTING](../CONTRIBUTING.md#security-issue-notifications) for more information.
 
 ## License
 
